@@ -1,14 +1,13 @@
+import { connect } from "react-redux";
 import "./Movies.css"
+import { RootState } from "./store";
+import { Movie } from "./reducers/movies";
 
-function Movies() {
-    const movies = [
-        { title: "The Shawshank Redemption" },
-        { title: "The Godfather" },
-        { title: "The Dark Knight" },
-        { title: "The Godfather Part II" },
-        { title: "Angry Men" }
-    ];
+interface Props {
+    movies: Movie[];
+}
 
+function Movies({ movies }: Props) {
     return (
         <section>
             <div>
@@ -18,4 +17,10 @@ function Movies() {
     );
 }
 
-export default Movies;
+const mapStateToProps = (state: RootState) => ({
+    movies: state.movies.top
+})
+
+const connector = connect(mapStateToProps)
+
+export default connector(Movies);

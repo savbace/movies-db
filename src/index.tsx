@@ -6,11 +6,13 @@ import reportWebVitals from './reportWebVitals';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import Movies from './Movies';
 import About from './About';
+import { Provider } from 'react-redux';
+import store from './store';
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />,
+    element: <Provider store={store}><App /></Provider>,
     children: [
       {
         path: "movies",
@@ -37,3 +39,4 @@ root.render(
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
+
