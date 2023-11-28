@@ -15,6 +15,9 @@ function App() {
           <li>
             <Link className="App-link" to="/movies">Movies</Link>
           </li>
+          <li>
+            <Link className="App-link" to="/about">About</Link>
+          </li>
         </ul>
       </header>
       <main className="App-main">
