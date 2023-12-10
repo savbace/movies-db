@@ -1,4 +1,3 @@
-import logo from "./logo.svg";
 import styles from "./App.module.scss";
 import { Link, Outlet } from "react-router-dom";
 

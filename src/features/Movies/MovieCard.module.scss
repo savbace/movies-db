@@ -12,6 +12,12 @@
     a {
         color: shared.$primary-color;
     }
+
+    @media (max-width: shared.$max-mobile-width) {
+        & {
+            margin: 0.5rem;
+        }
+    }
 }
 
 .thumbnail {
@@ -31,5 +37,11 @@
     .popularity {
         margin-top: 0.5rem;
         font-weight: bold;
+    }
+
+    @media (max-width: shared.$max-mobile-width) {
+        & {
+            padding: 0.5rem;
+        }
     }
 }

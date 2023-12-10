@@ -15,6 +15,7 @@ function Movies({ movies }: Props) {
             <div className={styles.list}>
                 {movies.map(m => (
                     <MovieCard
+                        key={m.id}
                         id={m.id}
                         title={m.title}
                         overview={m.overview}
