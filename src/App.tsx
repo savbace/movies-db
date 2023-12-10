@@ -6,7 +6,7 @@ function App() {
   return (
     <div className={styles.root}>
       <header className={styles.header}>
-        <img src={logo} className={styles.logo} alt="logo" />
+        <img src="/cinema-ico.png" className={styles.logo} alt="logo" />
         <h4>The Movies DB</h4>
         <ul>
           <li>
