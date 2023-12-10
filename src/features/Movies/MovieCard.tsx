@@ -12,11 +12,14 @@ interface Props {
 function MovieCard({ id, title, overview, popularity }: Props) {
     return (
         <div className={styles.card}>
-            <div>
-                <Link to={`/movies/${id}`}>{title}</Link>
+            <img className={styles.thumbnail} src="/movie-thumb.png" alt="Movie thumbnail" />
+            <div className={styles.content}>
+                <div>
+                    <Link to={`/movies/${id}`}>{title}</Link>
+                </div>
+                <span className={styles.overview}>{overview}</span>
+                <div className={styles.popularity}>{popularity}</div>
             </div>
-            <span className={styles.overview}>{overview}</span>
-            <div className={styles.popularity}>{popularity}</div>
         </div>
     );
 }
