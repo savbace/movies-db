@@ -1,4 +1,4 @@
-import styles from "./MovieCard.module.css";
+import styles from "./MovieCard.module.scss";
 
 import { Link } from "react-router-dom";
 

@@ -1,3 +1,5 @@
+@use "styles/shared";
+
 .root {
   display: flex;
   flex-direction: column;
@@ -22,17 +24,17 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  font-size: calc(10px + 1.5vmin);
+  color: shared.$primary-color;
 }
 
 .link {
-  color: #61dafb;
+  color: shared.$nav-color;
 }
 
 .main {
   min-height: 90vh;
-  color: white;
+  color: shared.$primary-color;
 }
 
 @keyframes App-logo-spin {

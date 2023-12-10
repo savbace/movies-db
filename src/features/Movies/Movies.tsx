@@ -1,4 +1,4 @@
-import styles from "./Movies.module.css";
+import styles from "./Movies.module.scss";
 
 import { connect } from "react-redux";
 import { RootState } from "../../store";
