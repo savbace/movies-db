@@ -1,4 +1,4 @@
-import "./Movies.css"
+import styles from "./Movies.module.css";
 
 import { connect } from "react-redux";
 import { RootState } from "../../store";
@@ -12,7 +12,7 @@ interface Props {
 function Movies({ movies }: Props) {
     return (
         <section>
-            <div className="Movies-list">
+            <div className={styles.list}>
                 {movies.map(m => (
                     <MovieCard
                         id={m.id}

@@ -1,3 +1,5 @@
+import styles from "./MovieCard.module.css";
+
 import { Link } from "react-router-dom";
 
 interface Props {
@@ -9,12 +11,12 @@ interface Props {
 
 function MovieCard({ id, title, overview, popularity }: Props) {
     return (
-        <div className="Movies-card">
+        <div className={styles.card}>
             <div>
                 <Link to={`/movies/${id}`}>{title}</Link>
             </div>
-            <span className="Movies-card-oveview">{overview}</span>
-            <div className="Movies-card-pop">{popularity}</div>
+            <span className={styles.overview}>{overview}</span>
+            <div className={styles.popularity}>{popularity}</div>
         </div>
     );
 }

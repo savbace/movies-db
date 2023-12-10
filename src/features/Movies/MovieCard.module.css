@@ -1,10 +1,4 @@
-.Movies-list {
-    display: flex;
-    justify-content: center;
-    
-}
-
-.Movies-card {
+.card {
     margin: 1rem;
     padding: 1rem;
     display: flex;
@@ -14,15 +8,15 @@
     box-shadow: 0px 0px 5px 1px;
 }
 
-.Movies-card a {
+.card a {
     color: white;
 }
 
-.Movies-card-oveview {
+.overview {
     font-size: small;
     color: #9e9e9e;
 }
 
-.Movies-card-pop {
+.popularity {
     font-weight: bold;
 }
