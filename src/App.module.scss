@@ -26,6 +26,15 @@
   justify-content: center;
   font-size: calc(10px + 1.5vmin);
   color: shared.$primary-color;
+
+  ul {
+    list-style: none;
+  }
+
+  li {
+    display: inline-block;
+    margin-right: 20px;
+  }
 }
 
 .link {
@@ -41,6 +50,7 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
