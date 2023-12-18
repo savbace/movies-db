@@ -13,9 +13,11 @@ interface Props {
 
 function Movies({ movies }: Props) {
     const [moviesTemp, setMoviesTemp] = useState<Movie[]>([]);
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         const fetchMovies = async () => {
+            setIsLoading(true);
             const configuration = await client.getConfiguration();
             const results = await client.getNowPlaying();
             const imageSize = "w780";
@@ -27,6 +29,7 @@ function Movies({ movies }: Props) {
                 image: movie.backdrop_path ? `${configuration.images.base_url}${imageSize}${movie.backdrop_path}` : undefined
             }));
 
+            setIsLoading(false);
             setMoviesTemp(nowPlaying);
         };
 
@@ -37,16 +40,18 @@ function Movies({ movies }: Props) {
     return (
         <section>
             <div className={styles.list}>
-                {moviesTemp.map(m => (
-                    <MovieCard
-                        key={m.id}
-                        id={m.id}
-                        title={m.title}
-                        overview={m.overview}
-                        popularity={m.popularity}
-                        image={m.image}
-                    />
-                ))}
+                {isLoading
+                    ? <span>Loading...</span>
+                    : moviesTemp.map(m => (
+                        <MovieCard
+                            key={m.id}
+                            id={m.id}
+                            title={m.title}
+                            overview={m.overview}
+                            popularity={m.popularity}
+                            image={m.image}
+                        />
+                    ))}
             </div>
         </section>
     );
