@@ -5,22 +5,7 @@ import { RootState } from "../../store";
 import { Movie } from "../../reducers/movies";
 import MovieCard from "./MovieCard";
 import { useEffect, useState } from "react";
-import configuration from "../../configuration";
-
-async function getNowPlaying() {
-    var headers = new Headers();
-    headers.append("Accept", "application/json");
-    headers.append("Authorization", `Bearer ${configuration.apiToken}`);
-
-    var requestOptions = {
-        method: "GET",
-        headers: headers
-    };
-
-    const response = await fetch(`${configuration.apiUrl}/3/movie/now_playing`, requestOptions);
-    const value = await response.json();
-    return value;
-}
+import { client } from "../../api/tmdb";
 
 interface Props {
     movies: Movie[];
@@ -31,14 +16,17 @@ function Movies({ movies }: Props) {
 
     useEffect(() => {
         const fetchMovies = async () => {
-            const value = await getNowPlaying();
-            const nowPlaying: Movie[] = value.results.map((movie: Movie) => ({
+            const configuration = await client.getConfiguration();
+            const results = await client.getNowPlaying();
+            const imageSize = "w780";
+            const nowPlaying: Movie[] = results.map((movie) => ({
                 id: movie.id,
                 title: movie.title,
                 overview: movie.overview,
-                popularity: movie.popularity
+                popularity: movie.popularity,
+                image: movie.backdrop_path ? `${configuration.images.base_url}${imageSize}${movie.backdrop_path}` : undefined
             }));
-            
+
             setMoviesTemp(nowPlaying);
         };
 
@@ -56,6 +44,7 @@ function Movies({ movies }: Props) {
                         title={m.title}
                         overview={m.overview}
                         popularity={m.popularity}
+                        image={m.image}
                     />
                 ))}
             </div>
