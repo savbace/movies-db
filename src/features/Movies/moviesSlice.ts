@@ -1,7 +1,8 @@
 import { Action } from "redux";
 import { ThunkAction } from "redux-thunk";
 
-import { client } from "../api/tmdb";
+import { client } from "../../api/tmdb";
+import { ActionWithPayload, createReducer } from "../../redux/utils";
 
 export interface Movie {
     id: number;
@@ -29,7 +30,7 @@ export function fetchMovies(): ThunkResult<Promise<void>> {
     return async (dispatch) => {
         dispatch({ type: "movies/loading", payload: true });
 
-        const configuration = await client.getConfiguration();
+        const configuration = await client.getConfiguration(); // todo: single load per app
         const results = await client.getNowPlaying();
         const imageSize = "w780";
         const movies: Movie[] = results.map((movie) => ({
@@ -42,24 +43,6 @@ export function fetchMovies(): ThunkResult<Promise<void>> {
 
         dispatch({ type: "movies/loading", payload: false });
         dispatch({ type: "movies/fetch", payload: movies })
-    }
-}
-
-type ActionHandlers<S> = {
-    [key: string]: (state: S, action: any) => S;
-}
-
-interface ActionWithPayload<T> extends Action {
-    payload: T;
-}
-
-function createReducer<TState>(initialState: TState, handlers: ActionHandlers<TState>) {
-    return function (state: TState, action: Action) {
-        state ??= initialState;
-        const handler = handlers[action.type];
-        const nextState = handler?.(state, action) ?? state;
-
-        return nextState;
     }
 }
 

@@ -2,7 +2,7 @@ import styles from "./Movies.module.scss";
 
 import { connect, useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store";
-import { fetchMovies } from "../../reducers/movies";
+import { fetchMovies } from "./moviesSlice";
 import MovieCard from "./MovieCard";
 import { useEffect } from "react";
 
