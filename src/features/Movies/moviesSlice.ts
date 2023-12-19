@@ -1,8 +1,6 @@
-import { Action } from "redux";
-import { ThunkAction } from "redux-thunk";
-
 import { client } from "../../api/tmdb";
 import { ActionWithPayload, createReducer } from "../../redux/utils";
+import { AppThunk } from "../../store";
 
 export interface Movie {
     id: number;
@@ -22,13 +20,24 @@ const initialState: MoviesState = {
     top: []
 }
 
-export type Actions = { type: "movies/fetch" } | { type: "movies/loading" };
+function loading() {
+    return {
+        type: "movies/loading"
+    };
+}
 
-export type ThunkResult<R> = ThunkAction<R, MoviesState, undefined, Actions> | Action
+function loaded(movies: Movie[]) {
+    return {
+        type: "movies/loaded",
+        payload: movies
+    };
+}
 
-export function fetchMovies(): ThunkResult<Promise<void>> {
-    return async (dispatch) => {
-        dispatch({ type: "movies/loading", payload: true });
+// export type AppThunk<ReturnType> = ThunkAction<ReturnType, MoviesState, undefined, UnknownAction>;
+
+export function fetchMovies(): AppThunk<Promise<void>> {
+    return async (dispatch, getState) => {
+        dispatch(loading());
 
         const configuration = await client.getConfiguration(); // todo: single load per app
         const results = await client.getNowPlaying();
@@ -41,8 +50,7 @@ export function fetchMovies(): ThunkResult<Promise<void>> {
             image: movie.backdrop_path ? `${configuration.images.base_url}${imageSize}${movie.backdrop_path}` : undefined
         }));
 
-        dispatch({ type: "movies/loading", payload: false });
-        dispatch({ type: "movies/fetch", payload: movies })
+        dispatch(loaded(movies))
     }
 }
 
@@ -50,10 +58,10 @@ const moviesReducer = createReducer<MoviesState>(
     initialState,
     {
         "movies/loading": (state, action: ActionWithPayload<boolean>) => {
-            return { ...state, loading: action.payload };
+            return { ...state, loading: true };
         },
-        "movies/fetch": (state, action: ActionWithPayload<Movie[]>) => {
-            return { ...state, top: action.payload };
+        "movies/loaded": (state, action: ActionWithPayload<Movie[]>) => {
+            return { ...state, top: action.payload, loading: false };
         },
     });
 

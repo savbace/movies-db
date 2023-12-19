@@ -1,7 +1,7 @@
-import { applyMiddleware, createStore } from "redux";
+import { UnknownAction, applyMiddleware, createStore } from "redux";
 
 import rootReducer from "./reducer";
-import { thunk } from "redux-thunk";
+import { ThunkAction, thunk } from "redux-thunk";
 import { composeWithDevTools } from "@redux-devtools/extension"; // todo: DEV only
 
 function configureStore() {
@@ -15,5 +15,7 @@ const store = configureStore();
 export type RootState = ReturnType<typeof store.getState>;
 
 export type AppDispatch = typeof store.dispatch;
+
+export type AppThunk<ReturnType> = ThunkAction<ReturnType, RootState, undefined, UnknownAction>;
 
 export default store;

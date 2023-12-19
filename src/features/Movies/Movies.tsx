@@ -1,18 +1,16 @@
 import styles from "./Movies.module.scss";
 
-import { connect, useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../store";
+import { useEffect } from "react";
+import { connect } from "react-redux";
+import { RootState } from "../../store";
 import { fetchMovies } from "./moviesSlice";
 import MovieCard from "./MovieCard";
-import { useEffect } from "react";
-
-const selectMovies = (state: RootState) => state.movies.top;
-const selectMoviesLoading = (state: RootState) => state.movies.loading;
+import { useAppDispatch, useAppSelector } from "../../hooks";
 
 function Movies() {
-    const dispatch = useDispatch<AppDispatch>();
-    const movies = useSelector(selectMovies);
-    const loading = useSelector(selectMoviesLoading);
+    const dispatch = useAppDispatch();
+    const movies = useAppSelector(state => state.movies.top);
+    const loading = useAppSelector(state => state.movies.loading);
 
     useEffect(() => {
         dispatch(fetchMovies());
