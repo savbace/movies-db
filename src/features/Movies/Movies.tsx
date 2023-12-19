@@ -1,11 +1,8 @@
-import styles from "./Movies.module.scss";
-
 import { useEffect } from "react";
-import { connect } from "react-redux";
-import { RootState } from "../../store";
 import { fetchMovies } from "./moviesSlice";
 import MovieCard from "./MovieCard";
 import { useAppDispatch, useAppSelector } from "../../hooks";
+import { Container, Grid, LinearProgress, Typography } from "@mui/material";
 
 function Movies() {
     const dispatch = useAppDispatch();
@@ -17,30 +14,26 @@ function Movies() {
     }, [dispatch])
 
     return (
-        <section>
-            <div className={styles.list}>
-                {loading
-                    ? <span>Loading...</span>
-                    : movies.map(m => (
-                        <MovieCard
-                            key={m.id}
-                            id={m.id}
-                            title={m.title}
-                            overview={m.overview}
-                            popularity={m.popularity}
-                            image={m.image}
-                        />
+        <Container sx={{ py: 8 }} maxWidth="lg">
+            <Typography variant="h4" align="center" gutterBottom>Now playing</Typography>
+            {loading
+                ? <LinearProgress color="secondary" />
+                : <Grid container spacing={4}>
+                    {movies.map(m => (
+                        <Grid item key={m.id} xs={12} sm={6} md={4}>
+                            <MovieCard
+                                key={m.id}
+                                id={m.id}
+                                title={m.title}
+                                overview={m.overview}
+                                popularity={m.popularity}
+                                image={m.image}
+                            />
+                        </Grid>
                     ))}
-            </div>
-        </section>
+                </Grid>}
+        </Container>
     );
 }
 
-const mapStateToProps = (state: RootState) => ({
-    movies: state.movies.top,
-    loading: state.movies.loading
-});
-
-const connector = connect(mapStateToProps);
-
-export default connector(Movies);
+export default Movies;
