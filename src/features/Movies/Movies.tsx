@@ -1,48 +1,29 @@
 import styles from "./Movies.module.scss";
 
-import { connect } from "react-redux";
-import { RootState } from "../../store";
-import { Movie } from "../../reducers/movies";
+import { connect, useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../store";
+import { fetchMovies } from "../../reducers/movies";
 import MovieCard from "./MovieCard";
-import { useEffect, useState } from "react";
-import { client } from "../../api/tmdb";
+import { useEffect } from "react";
 
-interface Props {
-    movies: Movie[];
-}
+const selectMovies = (state: RootState) => state.movies.top;
+const selectMoviesLoading = (state: RootState) => state.movies.loading;
 
-function Movies({ movies }: Props) {
-    const [moviesTemp, setMoviesTemp] = useState<Movie[]>([]);
-    const [isLoading, setIsLoading] = useState(false);
+function Movies() {
+    const dispatch = useDispatch<AppDispatch>();
+    const movies = useSelector(selectMovies);
+    const loading = useSelector(selectMoviesLoading);
 
     useEffect(() => {
-        const fetchMovies = async () => {
-            setIsLoading(true);
-            const configuration = await client.getConfiguration();
-            const results = await client.getNowPlaying();
-            const imageSize = "w780";
-            const nowPlaying: Movie[] = results.map((movie) => ({
-                id: movie.id,
-                title: movie.title,
-                overview: movie.overview,
-                popularity: movie.popularity,
-                image: movie.backdrop_path ? `${configuration.images.base_url}${imageSize}${movie.backdrop_path}` : undefined
-            }));
-
-            setIsLoading(false);
-            setMoviesTemp(nowPlaying);
-        };
-
-        fetchMovies()
-            .catch(console.error);
-    }, []);
+        dispatch(fetchMovies());
+    }, [dispatch])
 
     return (
         <section>
             <div className={styles.list}>
-                {isLoading
+                {loading
                     ? <span>Loading...</span>
-                    : moviesTemp.map(m => (
+                    : movies.map(m => (
                         <MovieCard
                             key={m.id}
                             id={m.id}
@@ -58,9 +39,10 @@ function Movies({ movies }: Props) {
 }
 
 const mapStateToProps = (state: RootState) => ({
-    movies: state.movies.top
-})
+    movies: state.movies.top,
+    loading: state.movies.loading
+});
 
-const connector = connect(mapStateToProps)
+const connector = connect(mapStateToProps);
 
 export default connector(Movies);

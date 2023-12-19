@@ -1,4 +1,7 @@
-import { Action, Reducer } from "redux";
+import { Action } from "redux";
+import { ThunkAction } from "redux-thunk";
+
+import { client } from "../api/tmdb";
 
 export interface Movie {
     id: number;
@@ -9,21 +12,66 @@ export interface Movie {
 }
 
 interface MoviesState {
+    loading: boolean;
     top: Movie[]
 }
 
 const initialState: MoviesState = {
-    top: [
-        { id: 1, title: "The Shawshank Redemption", popularity: 98, overview: "Redemption..." },
-        { id: 2, title: "The Godfather", popularity: 97, overview: "Godfather..." },
-        { id: 3, title: "The Dark Knight", popularity: 96.5, overview: "When the menace known as the Joker wreaks havoc and chaos on the people of Gotham, Batman must accept one of the greatest psychological and physical tests of his ability to fight injustice." },
-        { id: 4, title: "The Godfather Part II", popularity: 96, overview: "Part II..." },
-        { id: 5, title: "Angry Men", popularity: 94, overview: "Men..." }
-    ]
+    loading: false,
+    top: []
 }
 
-const moviesReducer: Reducer<MoviesState, Action> = (state, action) => {
-    return initialState;
+export type Actions = { type: "movies/fetch" } | { type: "movies/loading" };
+
+export type ThunkResult<R> = ThunkAction<R, MoviesState, undefined, Actions> | Action
+
+export function fetchMovies(): ThunkResult<Promise<void>> {
+    return async (dispatch) => {
+        dispatch({ type: "movies/loading", payload: true });
+
+        const configuration = await client.getConfiguration();
+        const results = await client.getNowPlaying();
+        const imageSize = "w780";
+        const movies: Movie[] = results.map((movie) => ({
+            id: movie.id,
+            title: movie.title,
+            overview: movie.overview,
+            popularity: movie.popularity,
+            image: movie.backdrop_path ? `${configuration.images.base_url}${imageSize}${movie.backdrop_path}` : undefined
+        }));
+
+        dispatch({ type: "movies/loading", payload: false });
+        dispatch({ type: "movies/fetch", payload: movies })
+    }
 }
+
+type ActionHandlers<S> = {
+    [key: string]: (state: S, action: any) => S;
+}
+
+interface ActionWithPayload<T> extends Action {
+    payload: T;
+}
+
+function createReducer<TState>(initialState: TState, handlers: ActionHandlers<TState>) {
+    return function (state: TState, action: Action) {
+        state ??= initialState;
+        const handler = handlers[action.type];
+        const nextState = handler?.(state, action) ?? state;
+
+        return nextState;
+    }
+}
+
+const moviesReducer = createReducer<MoviesState>(
+    initialState,
+    {
+        "movies/loading": (state, action: ActionWithPayload<boolean>) => {
+            return { ...state, loading: action.payload };
+        },
+        "movies/fetch": (state, action: ActionWithPayload<Movie[]>) => {
+            return { ...state, top: action.payload };
+        },
+    });
 
 export default moviesReducer;
