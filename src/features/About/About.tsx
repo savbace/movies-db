@@ -33,7 +33,7 @@ function CountdownText() {
   }, [countdown]);
 
   return (
-    <Typography variant="h5" align="center" sx={{ mb: 2 }}>
+    <Typography variant="h4" align="center" sx={{ mb: 2 }}>
       Coming soon: {countdown}.
     </Typography>
   );
