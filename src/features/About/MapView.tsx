@@ -5,7 +5,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import { Box, Container, Typography } from "@mui/material";
 import { createMapWidget, addPopupToMapWidget } from "./mapWidget";
 
-export default function MapView() {
+export function MapView() {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<Map | null>(null);
   const [popupContainer, setPopupContainer] = useState<HTMLElement | null>(null);
