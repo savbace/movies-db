@@ -40,7 +40,7 @@ interface Configuration {
 
 interface ITmbdClient {
     getConfiguration: () => Promise<Configuration>;
-    getNowPlaying: () => Promise<MovieDetails[]>;
+    getNowPlaying: (page: number) => Promise<MovieDetails[]>;
 }
 
 export const client: ITmbdClient = {
@@ -48,8 +48,8 @@ export const client: ITmbdClient = {
         const response = await get<Configuration>("/configuration");
         return response;
     },
-    getNowPlaying: async () => {
-        const response = await get<PageResponse<MovieDetails>>("/movie/now_playing");
+    getNowPlaying: async (page: number = 1) => {
+        const response = await get<PageResponse<MovieDetails>>(`/movie/now_playing?page=${page}`);
         return response.results;
     }
 }
