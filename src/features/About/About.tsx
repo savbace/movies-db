@@ -2,12 +2,14 @@ import { Card, CardActions, CardMedia, Container, IconButton, Typography } from 
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import PauseIcon from "@mui/icons-material/Pause";
 import { useEffect, useRef, useState } from "react";
+import MapView from "./MapView";
 
 function About() {
   return (
     <Container sx={{ py: 8 }} maxWidth="md">
       <CountdownText />
       <CountdownVideo />
+      <MapView />
     </Container>
   );
 }
