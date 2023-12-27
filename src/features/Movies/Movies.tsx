@@ -10,16 +10,17 @@ function Movies() {
   const dispatch = useAppDispatch();
   const movies = useAppSelector((state) => state.movies.top);
   const loading = useAppSelector((state) => state.movies.loading);
+  const hasMorePages = useAppSelector((state) => state.movies.hasMorePages);
 
   const auth = useContext(AuthContext);
   const loggedIn = auth.user !== anonymousUser;
   const [targetRef, entry] = useIntersectionObserver();
 
   useEffect(() => {
-    if (entry?.isIntersecting) {
+    if (entry?.isIntersecting && hasMorePages) {
       dispatch(fetchNextPage());
     }
-  }, [dispatch, entry?.isIntersecting]);
+  }, [dispatch, entry?.isIntersecting, hasMorePages]);
 
   return (
     <Container sx={{ py: 8 }} maxWidth="lg">

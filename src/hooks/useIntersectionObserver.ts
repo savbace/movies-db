@@ -1,14 +1,16 @@
 import { useRef, useState, useEffect, MutableRefObject } from "react";
 
-const options = {
-  root: null,
-  rootMargin: "0px",
-  threshold: 1.0,
-};
+interface Options {
+  root?: Element;
+  rootMargin?: string;
+  threshold?: number;
+}
 
 type HookReturnType = [MutableRefObject<null>, IntersectionObserverEntry?];
 
-export function useIntersectionObserver(): HookReturnType {
+export function useIntersectionObserver(options: Options = {}): HookReturnType {
+  const { threshold = 1.0, root = null, rootMargin = "0px" } = options;
+
   const targetRef = useRef(null);
   const [entry, setEntry] = useState<IntersectionObserverEntry>();
 
@@ -18,7 +20,7 @@ export function useIntersectionObserver(): HookReturnType {
   }
 
   useEffect(() => {
-    const observer = new IntersectionObserver(callbackFn, options);
+    const observer = new IntersectionObserver(callbackFn, { threshold, root, rootMargin});
     const currentRef = targetRef.current;
 
     if (currentRef) {
@@ -30,7 +32,7 @@ export function useIntersectionObserver(): HookReturnType {
         observer.disconnect();
       }
     };
-  }, []);
+  }, [root, rootMargin, threshold]);
 
   return [targetRef, entry];
 }
