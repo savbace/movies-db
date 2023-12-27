@@ -6,18 +6,20 @@ const options = {
   threshold: 1.0,
 };
 
-export function useIntersectionObserver(): [MutableRefObject<null>, boolean] {
-  const containerRef = useRef(null);
-  const [isVisible, setIsVisible] = useState(false);
+type HookReturnType = [MutableRefObject<null>, IntersectionObserverEntry?];
+
+export function useIntersectionObserver(): HookReturnType {
+  const targetRef = useRef(null);
+  const [entry, setEntry] = useState<IntersectionObserverEntry>();
 
   function callbackFn(entries: IntersectionObserverEntry[]) {
     const [entry] = entries;
-    setIsVisible(entry.isIntersecting);
+    setEntry(entry);
   }
 
   useEffect(() => {
     const observer = new IntersectionObserver(callbackFn, options);
-    const currentRef = containerRef.current;
+    const currentRef = targetRef.current;
 
     if (currentRef) {
       observer.observe(currentRef);
@@ -30,5 +32,5 @@ export function useIntersectionObserver(): [MutableRefObject<null>, boolean] {
     };
   }, []);
 
-  return [containerRef, isVisible];
+  return [targetRef, entry];
 }
