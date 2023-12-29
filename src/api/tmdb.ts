@@ -51,6 +51,7 @@ export interface KeywordItem {
 
 export interface MoviesFilters {
   keywords?: number[];
+  genres?: number[]
 }
 
 interface ITmbdClient {
@@ -87,6 +88,10 @@ export const client: ITmbdClient = {
 
     if (filters.keywords?.length) {
       params.append("with_keywords", filters.keywords.join("|"));
+    }
+
+    if (filters.genres?.length) {
+      params.append("with_genres", filters.genres.join(","));
     }
 
     const query = params.toString();

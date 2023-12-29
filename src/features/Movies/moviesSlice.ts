@@ -1,6 +1,7 @@
 import { MoviesFilters, client } from "../../api/tmdb";
 import { ActionWithPayload, createReducer } from "../../redux/utils";
 import { AppThunk } from "../../store";
+import { genres } from "./genres";
 
 export interface Movie {
   id: number;
@@ -28,25 +29,7 @@ const initialState: MoviesState = {
   top: [],
   page: 0,
   hasMorePages: true,
-  // todo: hardcode more genres
-  genres: [
-    {
-      id: 28,
-      name: "Action",
-    },
-    {
-      id: 12,
-      name: "Adventure",
-    },
-    {
-      id: 16,
-      name: "Animation",
-    },
-    {
-      id: 35,
-      name: "Comedy",
-    },
-  ],
+  genres
 };
 
 function loading() {

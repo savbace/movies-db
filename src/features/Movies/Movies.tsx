@@ -21,13 +21,14 @@ function Movies() {
 
   useEffect(() => {
     dispatch(resetMovies());
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     if (entry?.isIntersecting && hasMorePages) {
       const moviesFilters = filters
         ? {
             keywords: filters?.keywords.map((k) => k.id),
+            genres: filters?.genres,
           }
         : undefined;
 
@@ -40,7 +41,6 @@ function Movies() {
       <Grid item xs="auto">
         <MoviesFilter
           onApply={(filters) => {
-            console.log("Applying filters: ", filters);
             dispatch(resetMovies());
             setFilters(filters);
           }}
