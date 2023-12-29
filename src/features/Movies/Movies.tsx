@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { fetchNextPage, resetMovies } from "./moviesSlice";
 import { useAppDispatch, useAppSelector } from "../../hooks";
-import { Container, Grid, LinearProgress } from "@mui/material";
+import { Container, Grid, LinearProgress, Typography } from "@mui/material";
 import { AuthContext, anonymousUser } from "../../AuthContext";
 import { useIntersectionObserver } from "../../hooks/useIntersectionObserver";
 import { Filters, MoviesFilter } from "./MoviesFilter";
@@ -48,6 +48,7 @@ function Movies() {
       </Grid>
       <Grid item xs={12}>
         <Container sx={{ py: 8 }} maxWidth="lg">
+          {!loading && !movies.length && <Typography variant="h6">No movies were found that match your query.</Typography>}
           <Grid container spacing={4}>
             {movies.map((m, i) => (
               <Grid item key={m.id} xs={12} sm={6} md={4}>
