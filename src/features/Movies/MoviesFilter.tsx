@@ -38,25 +38,23 @@ export function MoviesFilter({ onApply }: MoviesFilterProps) {
 
   const genres = useAppSelector((state) => state.movies.genres);
 
-  const fetchKeywords = useMemo(
-    () =>
-      debounce(async (query) => {
-        if (query) {
-          setKeywordsLoading(true);
+  const fetchKeywordsOptions = async (query: string) => {
+    if (query) {
+      setKeywordsLoading(true);
 
-          const options = await client.getKeywords(query);
+      const options = await client.getKeywords(query);
 
-          setKeywordsLoading(false);
-          setKeywordsOptions(options);
-        } else {
-          setKeywordsOptions([]);
-        }
-      }, 1000),
-    []
-  );
+      setKeywordsLoading(false);
+      setKeywordsOptions(options);
+    } else {
+      setKeywordsOptions([]);
+    }
+  };
+
+  const debouncedFetchKeywordsOptions = useMemo(() => debounce(fetchKeywordsOptions, 1000), []);
 
   return (
-    <Paper sx={{ m: 2, p: 0.5 }}>
+    <Paper sx={{ m: 2, p: 0.5, maxWidth: 350 }}>
       <form onSubmit={handleSubmit(onApply)}>
         <FormControl sx={{ m: 2, display: "block" }} component="fieldset" variant="standard">
           <Controller
@@ -73,7 +71,7 @@ export function MoviesFilter({ onApply }: MoviesFilterProps) {
                 onChange={(_, value) => onChange(value)}
                 value={value}
                 isOptionEqualToValue={(option, value) => option.id === value.id}
-                onInputChange={(_, value) => fetchKeywords(value)}
+                onInputChange={(_, value) => debouncedFetchKeywordsOptions(value)}
                 renderInput={(params) => <TextField {...params} label="Keywords" />}
               />
             )}
