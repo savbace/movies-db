@@ -17,7 +17,7 @@ async function get<TBody>(relativeUrl: string): Promise<TBody> {
   return value;
 }
 
-interface PageResponse<TResult> {
+export interface PageResponse<TResult> {
   page: number;
   results: TResult[];
   total_pages: number;

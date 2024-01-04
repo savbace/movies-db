@@ -1,12 +1,18 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import configuration from "../configuration";
-import { PageDetails, MovieDetails, MoviesFilters } from "../api/tmdb";
+import { MovieDetails, MoviesFilters, PageResponse } from "../api/tmdb";
 
 const baseUrl = `${configuration.apiUrl}/3`;
 
 interface MoviesQuery {
   page: number;
   filters: MoviesFilters;
+}
+
+interface MoviesState {
+  results: MovieDetails[];
+  lastPage: number;
+  hasMorePages: boolean;
 }
 
 export const tmdbApi = createApi({
@@ -19,7 +25,7 @@ export const tmdbApi = createApi({
     },
   }),
   endpoints: (builder) => ({
-    getMovies: builder.query<PageDetails<MovieDetails>, MoviesQuery>({
+    getMovies: builder.query<MoviesState, MoviesQuery>({
       query(moviesQuery) {
         const params = new URLSearchParams({
           page: moviesQuery.page.toString(),
@@ -37,6 +43,29 @@ export const tmdbApi = createApi({
         const path = `/discover/movie?${query}`;
 
         return path;
+      },
+      transformResponse(response: PageResponse<MovieDetails>, meta, arg) {
+        return {
+          results: response.results,
+          lastPage: arg.page,
+          hasMorePages: arg.page < response.total_pages,
+        };
+      },
+      serializeQueryArgs({ endpointName }) {
+        return endpointName;
+      },
+      merge(currentCacheData, responseData) {
+        if (responseData.lastPage === 1) {
+          currentCacheData.results = responseData.results;
+        } else {
+          currentCacheData.results.push(...responseData.results);
+        }
+
+        currentCacheData.hasMorePages = responseData.hasMorePages;
+        currentCacheData.lastPage = responseData.lastPage;
+      },
+      forceRefetch({ currentArg, previousArg }) {
+        return currentArg !== previousArg;
       },
     }),
   }),
