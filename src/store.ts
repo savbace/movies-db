@@ -1,16 +1,20 @@
-import { UnknownAction, applyMiddleware, createStore } from "redux";
+import { UnknownAction } from "redux";
+import { ThunkAction } from "redux-thunk";
+import { configureStore } from "@reduxjs/toolkit";
 
-import rootReducer from "./reducer";
-import { ThunkAction, thunk } from "redux-thunk";
-import { composeWithDevTools } from "@redux-devtools/extension"; // todo: DEV only
+import moviesReducer from "./features/Movies/moviesSlice";
+import { tmdbApi } from "./services/tmdb";
+import { setupListeners } from "@reduxjs/toolkit/query";
 
-function configureStore() {
-    const composedEnhancer = composeWithDevTools(applyMiddleware(thunk))
-    const store = createStore(rootReducer, composedEnhancer);
-    return store;
-}
+const store = configureStore({
+  reducer: {
+    movies: moviesReducer,
+    [tmdbApi.reducerPath]: tmdbApi.reducer,
+  },
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(tmdbApi.middleware)
+});
 
-const store = configureStore();
+setupListeners(store.dispatch);
 
 export type RootState = ReturnType<typeof store.getState>;
 

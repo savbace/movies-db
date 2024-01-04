@@ -24,7 +24,7 @@ interface PageResponse<TResult> {
   total_results: number;
 }
 
-interface MovieDetails {
+export interface MovieDetails {
   id: number;
   title: string;
   overview: string;
@@ -32,7 +32,7 @@ interface MovieDetails {
   backdrop_path?: string | null;
 }
 
-interface PageDetails<T> {
+export interface PageDetails<T> {
   results: T[];
   page: number;
   totalPages: number;

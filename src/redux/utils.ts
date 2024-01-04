@@ -9,7 +9,7 @@ export interface ActionWithPayload<T> extends Action {
 }
 
 export function createReducer<TState>(initialState: TState, handlers: ActionHandlers<TState>) {
-    return function (state: TState, action: Action) {
+    return function (state: TState | undefined, action: Action) {
         state ??= initialState;
         const handler = handlers[action.type];
         const nextState = handler?.(state, action) ?? state;
