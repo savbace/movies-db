@@ -9,7 +9,12 @@ export interface MoviesQuery {
   filters: MoviesFilters;
 }
 
-interface MoviesState {
+export interface Genre {
+  id: number;
+  name: string;
+}
+
+export interface MoviesState {
   results: MovieDetails[];
   lastPage: number;
   hasMorePages: boolean;
@@ -75,7 +80,11 @@ export const tmdbApi = createApi({
       query: (query) => `/search/keyword?query=${query}`,
       transformResponse: (response: PageResponse<KeywordItem>) => response.results,
     }),
+    getGenres: builder.query<Genre[], void>({
+      query: () => "/genre/movie/list",
+      transformResponse: (response: { genres: Genre[] }) => response.genres,
+    }),
   }),
 });
 
-export const { useGetMoviesQuery, useGetConfigurationQuery, useGetKeywordsQuery } = tmdbApi;
+export const { useGetMoviesQuery, useGetConfigurationQuery, useGetKeywordsQuery, useGetGenresQuery } = tmdbApi;
