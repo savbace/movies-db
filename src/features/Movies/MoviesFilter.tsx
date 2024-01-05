@@ -13,9 +13,8 @@ import {
 } from "@mui/material";
 import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
 import { useMemo, useState } from "react";
-import { KeywordItem } from "../../api/tmdb";
 import { Controller, useForm } from "react-hook-form";
-import { useGetGenresQuery, useGetKeywordsQuery } from "../../services/tmdb";
+import { KeywordItem, useGetGenresQuery, useGetKeywordsQuery } from "../../services/tmdb";
 
 export interface Filters {
   keywords: KeywordItem[];

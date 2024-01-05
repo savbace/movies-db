@@ -1,8 +1,25 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import configuration from "../configuration";
-import { Configuration, KeywordItem, MovieDetails, MoviesFilters, PageResponse } from "../api/tmdb";
 
-const baseUrl = `${configuration.apiUrl}/3`;
+export interface PageResponse<TResult> {
+  page: number;
+  results: TResult[];
+  total_pages: number;
+  total_results: number;
+}
+
+export interface MovieDetails {
+  id: number;
+  title: string;
+  overview: string;
+  popularity: number;
+  backdrop_path?: string | null;
+}
+
+export interface MoviesFilters {
+  keywords?: number[];
+  genres?: number[];
+}
 
 export interface MoviesQuery {
   page: number;
@@ -10,6 +27,17 @@ export interface MoviesQuery {
 }
 
 export interface Genre {
+  id: number;
+  name: string;
+}
+
+export interface Configuration {
+  images: {
+    base_url: string;
+  };
+}
+
+export interface KeywordItem {
   id: number;
   name: string;
 }
@@ -23,7 +51,7 @@ export interface MoviesState {
 export const tmdbApi = createApi({
   reducerPath: "tmdbApi",
   baseQuery: fetchBaseQuery({
-    baseUrl,
+    baseUrl: `${configuration.apiUrl}/3`,
     prepareHeaders(headers) {
       headers.set("Accept", "application/json");
       headers.set("Authorization", `Bearer ${configuration.apiToken}`);
