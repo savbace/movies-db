@@ -38,7 +38,7 @@ export interface PageDetails<T> {
   totalPages: number;
 }
 
-interface Configuration {
+export interface Configuration {
   images: {
     base_url: string;
   };

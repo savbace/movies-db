@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import configuration from "../configuration";
-import { MovieDetails, MoviesFilters, PageResponse } from "../api/tmdb";
+import { Configuration, MovieDetails, MoviesFilters, PageResponse } from "../api/tmdb";
 
 const baseUrl = `${configuration.apiUrl}/3`;
 
@@ -25,6 +25,9 @@ export const tmdbApi = createApi({
     },
   }),
   endpoints: (builder) => ({
+    getConfiguration: builder.query<Configuration, void>({
+      query: () => "/configuration",
+    }),
     getMovies: builder.query<MoviesState, MoviesQuery>({
       query(moviesQuery) {
         const params = new URLSearchParams({
@@ -71,4 +74,4 @@ export const tmdbApi = createApi({
   }),
 });
 
-export const { useGetMoviesQuery } = tmdbApi;
+export const { useGetMoviesQuery, useGetConfigurationQuery } = tmdbApi;

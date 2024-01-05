@@ -1,7 +1,7 @@
 import { Box, Button, Container, LinearProgress, Typography } from "@mui/material";
 import { useMemo, useState } from "react";
 
-import { useGetMoviesQuery } from "./services/tmdb";
+import { useGetConfigurationQuery, useGetMoviesQuery } from "./services/tmdb";
 import MovieCard from "./features/Movies/MovieCard";
 
 export function Temp() {
@@ -18,6 +18,11 @@ export function Temp() {
   );
 
   const { data, isLoading, isFetching } = useGetMoviesQuery(query);
+  const { data: configuration } = useGetConfigurationQuery();
+
+  function formatImageUrl(imagePath?: string | null) {
+    return imagePath && configuration ? `${configuration.images.base_url}w780${imagePath}` : undefined;
+  }
 
   return (
     <Container sx={{ mt: 2 }}>
@@ -31,7 +36,13 @@ export function Temp() {
         <ul>
           {data?.results.map((m) => (
             <li key={m.id}>
-              <MovieCard id={m.id} title={m.title} overview={m.overview} popularity={m.popularity} />
+              <MovieCard
+                id={m.id}
+                title={m.title}
+                overview={m.overview}
+                popularity={m.popularity}
+                image={formatImageUrl(m.backdrop_path)}
+              />
             </li>
           ))}
         </ul>
