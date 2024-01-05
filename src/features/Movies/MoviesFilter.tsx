@@ -12,9 +12,10 @@ import {
 } from "@mui/material";
 import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
 import { useMemo, useState } from "react";
-import { KeywordItem, client } from "../../api/tmdb";
+import { KeywordItem } from "../../api/tmdb";
 import { useAppSelector } from "../../hooks";
 import { Controller, useForm } from "react-hook-form";
+import { useGetKeywordsQuery } from "../../services/tmdb";
 
 export interface Filters {
   keywords: KeywordItem[];
@@ -33,22 +34,13 @@ export function MoviesFilter({ onApply }: MoviesFilterProps) {
     },
   });
 
-  const [keywordsOptions, setKeywordsOptions] = useState<KeywordItem[]>([]);
-  const [keywordsLoading, setKeywordsLoading] = useState(false);
+  const [keywordsQuery, setKeywordsQuery] = useState<string>("");
+  const { data: keywordsOptions = [], isLoading: keywordsLoading } = useGetKeywordsQuery(keywordsQuery, { skip: !keywordsQuery });
 
   const genres = useAppSelector((state) => state.movies.genres);
 
   const fetchKeywordsOptions = async (query: string) => {
-    if (query) {
-      setKeywordsLoading(true);
-
-      const options = await client.getKeywords(query);
-
-      setKeywordsLoading(false);
-      setKeywordsOptions(options);
-    } else {
-      setKeywordsOptions([]);
-    }
+    setKeywordsQuery(query);
   };
 
   const debouncedFetchKeywordsOptions = useMemo(() => debounce(fetchKeywordsOptions, 1000), []);

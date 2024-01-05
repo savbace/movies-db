@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import configuration from "../configuration";
-import { Configuration, MovieDetails, MoviesFilters, PageResponse } from "../api/tmdb";
+import { Configuration, KeywordItem, MovieDetails, MoviesFilters, PageResponse } from "../api/tmdb";
 
 const baseUrl = `${configuration.apiUrl}/3`;
 
@@ -71,7 +71,11 @@ export const tmdbApi = createApi({
         return currentArg !== previousArg;
       },
     }),
+    getKeywords: builder.query<KeywordItem[], string>({
+      query: (query) => `/search/keyword?query=${query}`,
+      transformResponse: (response: PageResponse<KeywordItem>) => response.results,
+    }),
   }),
 });
 
-export const { useGetMoviesQuery, useGetConfigurationQuery } = tmdbApi;
+export const { useGetMoviesQuery, useGetConfigurationQuery, useGetKeywordsQuery } = tmdbApi;
