@@ -3,7 +3,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import { Link as RouterLink } from "react-router-dom";
 import { memo } from "react";
 
-interface Props {
+interface MovieCardProps {
   id: number;
   title: string;
   popularity: number;
@@ -13,7 +13,7 @@ interface Props {
   onAddToFavorite?(id: number): void;
 }
 
-function MovieCard({ id, title, overview, popularity, onAddToFavorite, image = "/movie-thumb.png", enableUserActions = false }: Props) {
+function MovieCard({ id, title, overview, popularity, onAddToFavorite, image = "/movie-thumb.png", enableUserActions = false }: MovieCardProps) {
   console.count("MovieCard");
 
   return (
