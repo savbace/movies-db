@@ -80,7 +80,7 @@ export const tmdbApi = createApi({
 
         return path;
       },
-      transformResponse(response: PageResponse<MovieDetails>, meta, arg) {
+      transformResponse(response: PageResponse<MovieDetails>, _, arg) {
         return {
           results: response.results,
           lastPage: arg.page,

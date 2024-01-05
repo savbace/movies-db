@@ -35,14 +35,15 @@ export function MoviesFilter({ onApply }: MoviesFilterProps) {
 
   const [keywordsQuery, setKeywordsQuery] = useState<string>("");
   const { data: keywordsOptions = [], isLoading: keywordsLoading } = useGetKeywordsQuery(keywordsQuery, { skip: !keywordsQuery });
-
   const { data: genres, isLoading: genresLoading } = useGetGenresQuery();
 
-  const fetchKeywordsOptions = async (query: string) => {
-    setKeywordsQuery(query);
-  };
-
-  const debouncedFetchKeywordsOptions = useMemo(() => debounce(fetchKeywordsOptions, 1000), []);
+  const debouncedFetchKeywordsOptions = useMemo(
+    () =>
+      debounce((query: string) => {
+        setKeywordsQuery(query);
+      }, 1000),
+    []
+  );
 
   return (
     <Paper sx={{ m: 2, p: 0.5, maxWidth: 350 }}>
