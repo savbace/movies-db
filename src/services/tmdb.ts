@@ -4,7 +4,7 @@ import { Configuration, MovieDetails, MoviesFilters, PageResponse } from "../api
 
 const baseUrl = `${configuration.apiUrl}/3`;
 
-interface MoviesQuery {
+export interface MoviesQuery {
   page: number;
   filters: MoviesFilters;
 }

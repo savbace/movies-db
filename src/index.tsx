@@ -14,7 +14,6 @@ import store from "./store";
 import Home from "./features/Home/Home";
 import { ErrorBoundary } from "./ErrorBoundary";
 import { LinearProgress } from "@mui/material";
-import { Temp } from "./Temp";
 
 const Movies = lazy(() => import("./features/Movies/Movies"));
 
@@ -36,10 +35,6 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <Home />,
-      },
-      {
-        path: "/temp",
-        element: <Temp />,
       },
       {
         path: "movies",
