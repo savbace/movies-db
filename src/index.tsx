@@ -8,12 +8,13 @@ import ReactDOM from "react-dom/client";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import About from "./features/About/About";
 import { Provider } from "react-redux";
+import { LinearProgress } from "@mui/material";
 import store from "./store";
+import About from "./features/About/About";
 import Home from "./features/Home/Home";
 import { ErrorBoundary } from "./ErrorBoundary";
-import { LinearProgress } from "@mui/material";
+import { Extra } from "./features/Extra/Extra";
 
 const Movies = lazy(() => import("./features/Movies/Movies"));
 
@@ -43,6 +44,10 @@ const router = createBrowserRouter([
             <Movies />
           </Suspense>
         ),
+      },
+      {
+        path: "extra",
+        element: <Extra />,
       },
       {
         path: "about",
