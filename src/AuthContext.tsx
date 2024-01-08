@@ -1,5 +1,6 @@
 import { createContext } from "react";
 
+// todo: drop
 export interface AuthInfo {
   user: {
     name: string;

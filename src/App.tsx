@@ -28,7 +28,7 @@ function App() {
     <ThemeProvider theme={defaultTheme}>
       <CssBaseline />
       <AuthContext.Provider value={auth}>
-        <AppHeader onLogin={() => setAuth(fakeAuth)} onLogout={() => setAuth({ user: anonymousUser })} />
+        <AppHeader />
         <main>
           <Outlet />
         </main>

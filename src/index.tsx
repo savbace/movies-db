@@ -15,16 +15,20 @@ import About from "./features/About/About";
 import Home from "./features/Home/Home";
 import { ErrorBoundary } from "./ErrorBoundary";
 import { Extra } from "./features/Extra/Extra";
+import { AuthCallback } from "./auth/AuthCallback";
+import { StatefulAuthProvider } from "./auth/StatefulAuthProvider";
 
 const Movies = lazy(() => import("./features/Movies/Movies"));
 
 function AppEntrypoint() {
   return (
-    <Provider store={store}>
-      <ErrorBoundary>
-        <App />
-      </ErrorBoundary>
-    </Provider>
+    <StatefulAuthProvider>
+      <Provider store={store}>
+        <ErrorBoundary>
+          <App />
+        </ErrorBoundary>
+      </Provider>
+    </StatefulAuthProvider>
   );
 }
 
@@ -52,6 +56,10 @@ const router = createBrowserRouter([
       {
         path: "about",
         element: <About />,
+      },
+      {
+        path: "callback",
+        element: <AuthCallback />,
       },
     ],
   },

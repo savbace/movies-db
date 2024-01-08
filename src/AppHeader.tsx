@@ -1,15 +1,9 @@
 import { AppBar, Box, Button, Link, Toolbar, Typography } from "@mui/material";
 import LiveTvOutlinedIcon from "@mui/icons-material/LiveTvOutlined";
 import { Link as RouterLink } from "react-router-dom";
-import { useContext } from "react";
-import { AuthContext, anonymousUser } from "./AuthContext";
+import { useAuth0 } from "@auth0/auth0-react";
 
-interface Props {
-  onLogin(): void;
-  onLogout(): void;
-}
-
-export function AppHeader({ onLogin, onLogout }: Props) {
+export function AppHeader() {
   return (
     <AppBar position="static">
       <Toolbar>
@@ -25,29 +19,40 @@ export function AppHeader({ onLogin, onLogout }: Props) {
             <HeaderLink to="/about">About</HeaderLink>
           </nav>
         </Box>
-        <AuthSection onLogin={onLogin} onLogout={onLogout} />
+        <AuthSection />
       </Toolbar>
     </AppBar>
   );
 }
 
-interface AuthSectionProps {
-  onLogin(): void;
-  onLogout(): void;
-}
+function AuthSection() {
+  const { loginWithRedirect, isAuthenticated, user, logout } = useAuth0();
 
-function AuthSection({ onLogin, onLogout }: AuthSectionProps) {
-  const auth = useContext(AuthContext);
+  const handleLogin = async () => {
+    await loginWithRedirect({
+      appState: {
+        returnTo: "/"
+      },
+    });
+  };
 
-  return auth.user !== anonymousUser ? (
+  const handleLogout = () => {
+    logout({
+      logoutParams: {
+        returnTo: window.location.origin,
+      },
+    });
+  };
+
+  return isAuthenticated ? (
     <>
-      <Typography>Hello, {auth.user.name}!</Typography>
-      <Button color="inherit" variant="outlined" onClick={onLogout} sx={{ ml: 1.5 }}>
+      <Typography>Hello, {user?.name}!</Typography>
+      <Button color="inherit" variant="outlined" onClick={handleLogout} sx={{ ml: 1.5 }}>
         Log out
       </Button>
     </>
   ) : (
-    <Button color="inherit" variant="outlined" onClick={onLogin}>
+    <Button color="inherit" variant="outlined" onClick={handleLogin}>
       Log in
     </Button>
   );
