@@ -2,8 +2,11 @@ import { AppBar, Box, Link, Toolbar, Typography } from "@mui/material";
 import LiveTvOutlinedIcon from "@mui/icons-material/LiveTvOutlined";
 import { Link as RouterLink } from "react-router-dom";
 import { AuthSection } from "./AuthSection";
+import { useAuth0 } from "@auth0/auth0-react";
 
 export function AppHeader() {
+  const { isAuthenticated } = useAuth0();
+
   return (
     <AppBar position="static">
       <Toolbar>
@@ -16,6 +19,7 @@ export function AppHeader() {
             <HeaderLink to="/">Home</HeaderLink>
             <HeaderLink to="/movies">Movies</HeaderLink>
             <HeaderLink to="/extra">Extra</HeaderLink>
+            {isAuthenticated && <HeaderLink to="/protected">Protected</HeaderLink>}
             <HeaderLink to="/about">About</HeaderLink>
           </nav>
         </Box>

@@ -7,6 +7,7 @@ const authConfig = {
   clientId: configuration.auth0ClientId!,
   authorizationParams: {
     redirect_uri: configuration.auth0RedirectUri,
+    audience: configuration.audience,
   },
 };
 
@@ -16,7 +17,7 @@ interface StatefulAuthProviderProps {
 
 export function StatefulAuthProvider({ children }: StatefulAuthProviderProps) {
   const navigate = useNavigate();
-
+  
   const onRedirectCallback = (appState?: AppState) => {
     navigate(appState?.returnTo || window.location.pathname);
   };
