@@ -2,7 +2,7 @@ import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { Outlet } from "react-router-dom";
 import { CssBaseline } from "@mui/material";
 import { teal } from "@mui/material/colors";
-import { AppHeader } from "./AppHeader";
+import { AppHeader } from "./features/Header/AppHeader";
 import { AuthContext, AuthInfo, anonymousUser } from "./AuthContext";
 import { useState } from "react";
 

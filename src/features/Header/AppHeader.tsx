@@ -1,7 +1,7 @@
-import { AppBar, Box, Button, Link, Toolbar, Typography } from "@mui/material";
+import { AppBar, Box, Link, Toolbar, Typography } from "@mui/material";
 import LiveTvOutlinedIcon from "@mui/icons-material/LiveTvOutlined";
 import { Link as RouterLink } from "react-router-dom";
-import { useAuth0 } from "@auth0/auth0-react";
+import { AuthSection } from "./AuthSection";
 
 export function AppHeader() {
   return (
@@ -22,39 +22,6 @@ export function AppHeader() {
         <AuthSection />
       </Toolbar>
     </AppBar>
-  );
-}
-
-function AuthSection() {
-  const { loginWithRedirect, isAuthenticated, user, logout } = useAuth0();
-
-  const handleLogin = async () => {
-    await loginWithRedirect({
-      appState: {
-        returnTo: "/"
-      },
-    });
-  };
-
-  const handleLogout = () => {
-    logout({
-      logoutParams: {
-        returnTo: window.location.origin,
-      },
-    });
-  };
-
-  return isAuthenticated ? (
-    <>
-      <Typography>Hello, {user?.name}!</Typography>
-      <Button color="inherit" variant="outlined" onClick={handleLogout} sx={{ ml: 1.5 }}>
-        Log out
-      </Button>
-    </>
-  ) : (
-    <Button color="inherit" variant="outlined" onClick={handleLogin}>
-      Log in
-    </Button>
   );
 }
 
