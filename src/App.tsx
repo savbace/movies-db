@@ -3,8 +3,6 @@ import { Outlet } from "react-router-dom";
 import { CssBaseline } from "@mui/material";
 import { teal } from "@mui/material/colors";
 import { AppHeader } from "./features/Header/AppHeader";
-import { AuthContext, AuthInfo, anonymousUser } from "./AuthContext";
-import { useState } from "react";
 
 const defaultTheme = createTheme({
   palette: {
@@ -15,24 +13,14 @@ const defaultTheme = createTheme({
   },
 });
 
-const fakeAuth = {
-  user: {
-    name: "Joe",
-  },
-};
-
 function App() {
-  const [auth, setAuth] = useState<AuthInfo>({ user: anonymousUser });
-
   return (
     <ThemeProvider theme={defaultTheme}>
       <CssBaseline />
-      <AuthContext.Provider value={auth}>
-        <AppHeader />
-        <main>
-          <Outlet />
-        </main>
-      </AuthContext.Provider>
+      <AppHeader />
+      <main>
+        <Outlet />
+      </main>
     </ThemeProvider>
   );
 }
