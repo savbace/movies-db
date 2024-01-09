@@ -1,5 +1,5 @@
 import { useAuth0 } from "@auth0/auth0-react";
-import { Container, Typography } from "@mui/material";
+import { Alert, AlertTitle, Box, Container, LinearProgress, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { protectedApi } from "../../services/protectedApi";
 
@@ -19,10 +19,17 @@ export function Protected() {
 
   return (
     <Container sx={{ p: 2 }}>
-      <Typography>Response from API protected by JWT token:</Typography>
-      <pre>
-        <code>{response}</code>
-      </pre>
+      <Alert severity="info">
+        <AlertTitle>Info</AlertTitle>
+        This page calls external API protected by JWT token.
+      </Alert>
+      {!response && <LinearProgress />}
+      <Box sx={{ mt: 2 }}>
+        <Typography variant="button">Response:</Typography>
+        <pre>
+          <code>{response}</code>
+        </pre>
+      </Box>
     </Container>
   );
 }
