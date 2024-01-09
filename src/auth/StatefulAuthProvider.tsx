@@ -6,7 +6,7 @@ const authConfig = {
   domain: configuration.auth0Domain!,
   clientId: configuration.auth0ClientId!,
   authorizationParams: {
-    redirectUri: configuration.auth0RedirectUri,
+    redirect_uri: configuration.auth0RedirectUri,
   },
 };
 
