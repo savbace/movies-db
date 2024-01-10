@@ -17,13 +17,13 @@ interface StatefulAuthProviderProps {
 
 export function StatefulAuthProvider({ children }: StatefulAuthProviderProps) {
   const navigate = useNavigate();
-  
+
   const onRedirectCallback = (appState?: AppState) => {
     navigate(appState?.returnTo || window.location.pathname);
   };
 
   return (
-    <Auth0Provider {...authConfig} cacheLocation="localstorage" onRedirectCallback={onRedirectCallback}>
+    <Auth0Provider {...authConfig} useRefreshTokens cacheLocation="localstorage" onRedirectCallback={onRedirectCallback}>
       {children}
     </Auth0Provider>
   );
