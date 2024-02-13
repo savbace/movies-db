@@ -25,10 +25,10 @@ function Movies() {
   }
 
   const onIntersect = useCallback(() => {
-    if (hasMorePages) {
+    if (hasMorePages && !isFetching) {
       setQuery((q) => ({ ...q, page: q.page + 1 }));
     }
-  }, [hasMorePages]);
+  }, [hasMorePages, isFetching]);
 
   const [targetRef] = useIntersectionObserver({ onIntersect });
 
